@@ -33,6 +33,7 @@ async function createJob(req, res) {
     description,
     jobLink,
     appliedDate,
+    interest,
   } = req.body;
   const newObject = {};
   if (!companyName) {
@@ -61,8 +62,9 @@ async function createJob(req, res) {
   }
   if (appliedDate) {
     newObject.appliedDate = appliedDate;
-  } else {
-    newObject.appliedDate = new Date().toISOString().split("T")[0];
+  }
+  if (interest) {
+    newObject.interest = interest;
   }
   await jobModel.create(newObject);
   res.status(200).json({ Message: "Job Created" });
@@ -124,6 +126,12 @@ async function viewAllJob(req, res) {
       ">=": Op.gte,
       "=": Op.eq,
     };
+    const interestMap = {
+      extreme: 4,
+      high: 3,
+      medium: 2,
+      low: 1,
+    };
     const signRegex = /\b(<|<=|>|>=|=)\b/;
     filter.forEach((element) => {
       console.log(element);
@@ -134,7 +142,9 @@ async function viewAllJob(req, res) {
       parts = parts.split("-");
       let thisPropertyFilter = {};
       console.log(parts[2]);
-
+      if (parts[0] == "interest") {
+        parts[2] = interestMap[parts[2]];
+      }
       if (filteringQuery.hasOwnProperty(parts[0])) {
         filteringQuery[parts[0]][signMap[parts[1]]] = parts[2];
       } else {

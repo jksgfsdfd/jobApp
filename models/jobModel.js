@@ -41,7 +41,7 @@ const jobSchema = {
   },
   appliedDate: {
     type: DataTypes.DATEONLY,
-    //defaultValue: Sequelize.fn("now"),
+    defaultValue: DataTypes.NOW,
   },
   description: {
     type: DataTypes.TEXT,
@@ -58,8 +58,12 @@ const jobSchema = {
       },
     },
   },
+  interest: {
+    type: DataTypes.ENUM,
+    values: ["low", "medium", "high", "extreme"],
+  },
 };
-
-const jobModel = db.define("Jobs", jobSchema);
+const tableProperties = { timestamps: false };
+const jobModel = db.define("Jobs", jobSchema, tableProperties);
 
 module.exports = jobModel;
