@@ -18,7 +18,7 @@ app.use(errorHandler);
 //start the app
 async function start() {
   try {
-    await db.sync();
+    await db.sync({ alter: true });
     app.listen(3000);
   } catch (error) {
     console.error(error);

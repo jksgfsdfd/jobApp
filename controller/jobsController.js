@@ -23,12 +23,21 @@ async function createJob(req, res) {
   // username,companyname,role,status,salary
   //get user name from accesstoken
   const username = req.username;
-  const { company, role, status, salary } = req.body;
+  const {
+    companyName,
+    role,
+    status,
+    salary,
+    companyType,
+    description,
+    jobLink,
+    appliedDate,
+  } = req.body;
   const newObject = {};
-  if (!company) {
+  if (!companyName) {
     throw new CustomAPIError("Company Name must be provided", 302);
   }
-  newObject.companyName = company;
+  newObject.companyName = companyName;
   newObject.userName = username;
   if (role) {
     newObject.role = role;
@@ -38,6 +47,21 @@ async function createJob(req, res) {
   }
   if (status) {
     newObject.status = status;
+  }
+  if (companyType) {
+    newObject.companyType = companyType;
+  }
+
+  if (description) {
+    newObject.description = description;
+  }
+  if (jobLink) {
+    newObject.jobLink = jobLink;
+  }
+  if (appliedDate) {
+    newObject.appliedDate = appliedDate;
+  } else {
+    newObject.appliedDate = new Date().toISOString().split("T")[0];
   }
   await jobModel.create(newObject);
   res.status(200).json({ Message: "Job Created" });
