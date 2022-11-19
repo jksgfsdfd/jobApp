@@ -7,8 +7,8 @@ const {
   deleteJob,
   viewJob,
   viewAllJob,
-  verifyUser,
 } = require("../controller/jobsController");
+const verifyUser = require("../middleware/verifyUser");
 
 router.use(express.urlencoded({ extended: false }));
 router.use(verifyUser);

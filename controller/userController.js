@@ -42,7 +42,18 @@ async function signupUser(req, res) {
   }
 }
 
+async function deleteUser(req, res) {
+  const username = req.username;
+  const user = await userModel.findOne({ where: { username: username } });
+  if (user === null) {
+    throw new CustomAPIError("User not found", 403);
+  }
+  await userModel.destroy({ where: { username: username } });
+  res.status(200).json({ Message: "Successfully Deleted User" });
+}
+
 module.exports = {
   loginUser,
   signupUser,
+  deleteUser,
 };

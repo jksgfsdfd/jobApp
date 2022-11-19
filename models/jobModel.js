@@ -1,13 +1,14 @@
 const db = require("../db/jobAppDB");
+const userModel = require("./userModel");
 const validator = require("validator");
 const { Sequelize, DataTypes, Op } = require("sequelize");
 const CustomAPIError = require("../errors/customAPIError");
 
 const jobSchema = {
-  userName: {
+  /* userName: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
+  },*/
   companyName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -65,5 +66,14 @@ const jobSchema = {
 };
 const tableProperties = { timestamps: false };
 const jobModel = db.define("Jobs", jobSchema, tableProperties);
-
+userModel.hasMany(jobModel, {
+  sourceKey: "username",
+  foreignKey: "userName",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+jobModel.belongsTo(userModel, {
+  targetKey: "username",
+  foreignKey: "userName",
+});
 module.exports = jobModel;
