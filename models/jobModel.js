@@ -5,10 +5,6 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 const CustomAPIError = require("../errors/customAPIError");
 
 const jobSchema = {
-  /* userName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },*/
   companyName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -31,7 +27,7 @@ const jobSchema = {
     allowNull: true,
     validate: {
       isIn: {
-        args: [["applied", "rejected", "interview fixed", "interested"]],
+        args: [["APPLIED", "REJECTED", "INTERVIEW_FIXED", "INTERESTED"]],
         msg: "Provide valid job status",
       },
     },
@@ -42,7 +38,7 @@ const jobSchema = {
   },
   appliedDate: {
     type: DataTypes.DATEONLY,
-    defaultValue: DataTypes.NOW,
+    defaultValue: Sequelize.literal("(CURRENT_DATE())"),
   },
   description: {
     type: DataTypes.TEXT,
