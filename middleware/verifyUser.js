@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
+const CustomAPIError = require("../errors/customAPIError");
 function verifyUser(req, res, next) {
-  const token = req.body.token;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     throw new CustomAPIError("You have to have a token to access jobs", 401);
   }

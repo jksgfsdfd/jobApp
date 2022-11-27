@@ -14,7 +14,7 @@ const jobSchema = {
     allowNull: true,
     validate: {
       isIn: {
-        args: [["startup", "mnc"]],
+        args: [["STARTUP", "MNC"]],
         msg: "Provide valid company type",
       },
     },
@@ -62,14 +62,19 @@ const jobSchema = {
 };
 const tableProperties = { timestamps: false };
 const jobModel = db.define("Jobs", jobSchema, tableProperties);
+/*
 userModel.hasMany(jobModel, {
   sourceKey: "username",
   foreignKey: "userName",
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
+*/
+//allows the jobModel to get methods to access the foreign data
 jobModel.belongsTo(userModel, {
   targetKey: "username",
   foreignKey: "userName",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
 });
 module.exports = jobModel;
